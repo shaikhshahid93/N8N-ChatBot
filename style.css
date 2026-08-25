@@ -621,6 +621,19 @@ textarea::placeholder {
     background: #9ca3af;
 }
 
+.user-avatar {
+    background: #111827;
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar svg {
+    width: 17px;
+    height: 17px;
+}
 
 /* ================================
    MOBILE

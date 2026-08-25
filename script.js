@@ -21,9 +21,11 @@ const suggestions = document.querySelectorAll(".suggestion");
    SESSION
 ========================================== */
 
-let sessionId = localStorage.getItem("admissions_chat_session");
+let sessionId =
+    localStorage.getItem("admissions_chat_session");
 
 if (!sessionId) {
+
     sessionId = generateSessionId();
 
     localStorage.setItem(
@@ -91,22 +93,27 @@ function addMessage(
             ? "avatar user-avatar"
             : "avatar assistant-avatar";
 
+
     if (sender === "user") {
-          avatar.innerHTML = `
-              <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-              >
-                  <circle cx="12" cy="8" r="4"></circle>
-                  <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
-              </svg>
-          `;
+
+        avatar.innerHTML = `
+            <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
+            </svg>
+        `;
+
     } else {
-          avatar.textContent = "AI";
+
+        avatar.textContent = "AI";
+
     }
 
 
@@ -118,9 +125,12 @@ function addMessage(
     const senderName = document.createElement("div");
 
     senderName.className = "sender";
-   
+
     if (sender === "assistant") {
-       senderName.textContent = "Admissions Assistant";
+
+        senderName.textContent =
+            "Admissions Assistant";
+
     }
 
 
@@ -132,7 +142,8 @@ function addMessage(
             : "message assistant-message";
 
 
-    message.innerHTML = escapeHTML(text);
+    message.innerHTML =
+        escapeHTML(text);
 
 
     content.appendChild(senderName);
@@ -156,7 +167,8 @@ function showTyping() {
     removeTyping();
 
 
-    const row = document.createElement("div");
+    const row =
+        document.createElement("div");
 
     row.id = "typingIndicator";
 
@@ -164,7 +176,8 @@ function showTyping() {
         "message-row assistant-row";
 
 
-    const avatar = document.createElement("div");
+    const avatar =
+        document.createElement("div");
 
     avatar.className =
         "avatar assistant-avatar";
@@ -172,20 +185,25 @@ function showTyping() {
     avatar.textContent = "AI";
 
 
-    const content = document.createElement("div");
+    const content =
+        document.createElement("div");
 
-    content.className = "message-content";
+    content.className =
+        "message-content";
 
 
-    const sender = document.createElement("div");
+    const sender =
+        document.createElement("div");
 
-    sender.className = "sender";
+    sender.className =
+        "sender";
 
     sender.textContent =
         "Admissions Assistant";
 
 
-    const bubble = document.createElement("div");
+    const bubble =
+        document.createElement("div");
 
     bubble.className =
         "message assistant-message typing-message";
@@ -196,7 +214,8 @@ function showTyping() {
         const dot =
             document.createElement("span");
 
-        dot.className = "typing-dot";
+        dot.className =
+            "typing-dot";
 
         bubble.appendChild(dot);
     }
@@ -222,7 +241,9 @@ function removeTyping() {
         );
 
     if (typing) {
+
         typing.remove();
+
     }
 }
 
@@ -234,9 +255,22 @@ function removeTyping() {
 function setLoading(loading) {
 
     sendButton.disabled = loading;
+
     messageInput.disabled = loading;
 
-    if (!loading) {
+    if (loading) {
+
+        sendButton.setAttribute(
+            "aria-busy",
+            "true"
+        );
+
+    } else {
+
+        sendButton.removeAttribute(
+            "aria-busy"
+        );
+
         messageInput.focus();
     }
 }
@@ -263,26 +297,29 @@ function scrollToBottom() {
 
 function extractResponse(data) {
 
-    /*
-        n8n can return different structures
-        depending on configuration/version.
-    */
-
-
     if (Array.isArray(data)) {
 
         if (data.length === 0) {
+
             return null;
+
         }
 
         return extractResponse(data[0]);
     }
 
 
-    if (!data || typeof data !== "object") {
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
 
-        if (typeof data === "string") {
+        if (
+            typeof data === "string"
+        ) {
+
             return data;
+
         }
 
         return null;
@@ -292,28 +329,36 @@ function extractResponse(data) {
     if (
         typeof data.output === "string"
     ) {
+
         return data.output;
+
     }
 
 
     if (
         typeof data.text === "string"
     ) {
+
         return data.text;
+
     }
 
 
     if (
         typeof data.response === "string"
     ) {
+
         return data.response;
+
     }
 
 
     if (
         typeof data.message === "string"
     ) {
+
         return data.message;
+
     }
 
 
@@ -321,7 +366,11 @@ function extractResponse(data) {
         data.data &&
         typeof data.data === "object"
     ) {
-        return extractResponse(data.data);
+
+        return extractResponse(
+            data.data
+        );
+
     }
 
 
@@ -337,9 +386,25 @@ async function sendMessage(text) {
 
     text = text.trim();
 
+
     if (!text) {
+
         return;
+
     }
+
+
+    /*
+        Prevent duplicate requests while
+        the current request is processing.
+    */
+
+    if (sendButton.disabled) {
+
+        return;
+
+    }
+
 
     hideSuggestions();
 
@@ -358,6 +423,23 @@ async function sendMessage(text) {
     setLoading(true);
 
     showTyping();
+
+
+    /*
+        AbortController lets us stop the request
+        if n8n takes too long.
+    */
+
+    const controller =
+        new AbortController();
+
+
+    const timeout =
+        setTimeout(() => {
+
+            controller.abort();
+
+        }, 30000);
 
 
     try {
@@ -384,7 +466,10 @@ async function sendMessage(text) {
                         chatInput:
                             text
 
-                    })
+                    }),
+
+                    signal:
+                        controller.signal
                 }
             );
 
@@ -392,28 +477,45 @@ async function sendMessage(text) {
         if (!response.ok) {
 
             throw new Error(
-                `HTTP ${response.status}`
+                `Server returned HTTP ${response.status}`
             );
+
         }
 
 
-        const data =
-            await response.json();
+        let data;
 
+        try {
 
-        removeTyping();
+            data =
+                await response.json();
+
+        } catch (jsonError) {
+
+            throw new Error(
+                "The server returned an invalid response."
+            );
+
+        }
 
 
         const answer =
             extractResponse(data);
 
 
-        if (!answer) {
+        if (
+            !answer ||
+            !answer.trim()
+        ) {
 
             throw new Error(
                 "The chatbot returned an empty response."
             );
+
         }
+
+
+        removeTyping();
 
 
         addMessage(
@@ -433,27 +535,73 @@ async function sendMessage(text) {
         removeTyping();
 
 
+        let errorMessage =
+            "Sorry, something went wrong. Please try again.";
+
+
+        if (
+            error.name ===
+            "AbortError"
+        ) {
+
+            errorMessage =
+                "The assistant is taking too long to respond. Please try again.";
+
+        } else if (
+            error instanceof
+            TypeError
+        ) {
+
+            errorMessage =
+                "Unable to connect to the assistant. Please check your internet connection and try again.";
+
+        } else if (
+            error.message.includes(
+                "HTTP 5"
+            )
+        ) {
+
+            errorMessage =
+                "The assistant is temporarily unavailable. Please try again in a moment.";
+
+        }
+
+
         addMessage(
-            "Sorry, I couldn't process that request right now. Please try again.",
+            errorMessage,
             "assistant"
         );
 
+
     } finally {
+
+        clearTimeout(timeout);
 
         setLoading(false);
 
     }
-
 }
+
+
+/* ==========================================
+   HIDE SUGGESTIONS
+========================================== */
 
 function hideSuggestions() {
+
     const suggestionBox =
-        document.querySelector(".suggestions-wrapper");
+        document.querySelector(
+            ".suggestions-wrapper"
+        );
 
     if (suggestionBox) {
-        suggestionBox.style.display = "none";
+
+        suggestionBox.style.display =
+            "none";
+
     }
 }
+
 
 /* ==========================================
    SEND BUTTON
@@ -544,7 +692,7 @@ suggestions.forEach(
 
 
 /* ==========================================
-   CLEAR CHAT
+   NEW CHAT
 ========================================== */
 
 clearButton.addEventListener(
@@ -553,17 +701,22 @@ clearButton.addEventListener(
 
         const confirmed =
             confirm(
-                "Clear this conversation?"
+                "Start a new conversation?"
             );
 
 
         if (!confirmed) {
+
             return;
+
         }
 
 
-        messages.innerHTML = "";
-
+        /*
+            Generate a completely new session ID.
+            This separates the new conversation
+            from the previous memory session.
+        */
 
         sessionId =
             generateSessionId();
@@ -574,6 +727,17 @@ clearButton.addEventListener(
             sessionId
         );
 
+
+        /*
+            Clear the current conversation UI.
+        */
+
+        messages.innerHTML = "";
+
+
+        /*
+            Add the new conversation welcome message.
+        */
 
         addMessage(
             "Hi! I'm your admissions assistant. How can I help you today?",

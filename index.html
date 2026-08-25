@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admissions Assistant</title>
+
+    <meta
+        name="description"
+        content="AI-powered admissions assistant. Ask questions about admissions, fees, refunds, and more."
+    >
+
+    <!-- n8n Chat CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
+        rel="stylesheet"
+    >
+
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Chat container -->
+    <div id="n8n-chat"></div>
+
+    <!-- n8n Chat -->
+    <script type="module">
+
+        import { createChat } from
+        'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        createChat({
+
+            webhookUrl:
+                'https://shahid62.app.n8n.cloud/webhook/ae9c7103-947f-47bf-a345-59f3b3cc9960/chat',
+
+            webhookConfig: {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            },
+
+            target: '#n8n-chat',
+
+            mode: 'fullscreen',
+
+            chatInputKey: 'chatInput',
+
+            chatSessionKey: 'sessionId',
+
+            loadPreviousSession: true,
+
+            showWelcomeScreen: false,
+
+            defaultLanguage: 'en',
+
+            initialMessages: [
+                'Hi there! 👋',
+                'I am your admissions assistant. How can I help you?'
+            ],
+
+            i18n: {
+
+                en: {
+
+                    title: 'Admissions Assistant',
+
+                    subtitle:
+                        'Ask me anything about admissions, fees, refunds and more.',
+
+                    footer: '',
+
+                    getStarted: 'Start a conversation',
+
+                    inputPlaceholder:
+                        'Ask your question...'
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+    <!-- Your JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>

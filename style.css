@@ -262,10 +262,18 @@ body {
 
 
 .assistant-avatar {
-    background: #eef2ff;
+    background: linear-gradient(
+        135deg,
+        #eef2ff,
+        #e0e7ff
+    );
+
     color: #4f46e5;
 
-    border: 1px solid #e0e7ff;
+    border: 1px solid #c7d2fe;
+
+    font-size: 10px;
+    font-weight: 800;
 }
 
 

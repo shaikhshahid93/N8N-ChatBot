@@ -682,7 +682,3 @@ function addSuggestions() {
 messageInput.focus();
 
 scrollToBottom();
-
-.message {
-    text-align: left;
-}

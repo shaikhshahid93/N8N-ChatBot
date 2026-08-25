@@ -91,10 +91,23 @@ function addMessage(
             ? "avatar user-avatar"
             : "avatar assistant-avatar";
 
-    avatar.textContent =
-        sender === "user"
-            ? "You"
-            : "AI";
+    if (sender === "user") {
+          avatar.innerHTML = `
+              <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+              >
+                  <circle cx="12" cy="8" r="4"></circle>
+                  <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path>
+              </svg>
+          `;
+    } else {
+          avatar.textContent = "AI";
+    }
 
 
     const content = document.createElement("div");
@@ -105,11 +118,10 @@ function addMessage(
     const senderName = document.createElement("div");
 
     senderName.className = "sender";
-
-    senderName.textContent =
-        sender === "user"
-            ? "You"
-            : "Admissions Assistant";
+   
+    if (sender === "assistant") {
+       senderName.textContent = "Admissions Assistant";
+    }
 
 
     const message = document.createElement("div");
@@ -329,6 +341,8 @@ async function sendMessage(text) {
         return;
     }
 
+    hideSuggestions();
+
 
     addMessage(
         text,
@@ -432,6 +446,14 @@ async function sendMessage(text) {
 
 }
 
+function hideSuggestions() {
+    const suggestionBox =
+        document.querySelector(".suggestions-wrapper");
+
+    if (suggestionBox) {
+        suggestionBox.style.display = "none";
+    }
+}
 
 /* ==========================================
    SEND BUTTON
@@ -660,3 +682,7 @@ function addSuggestions() {
 messageInput.focus();
 
 scrollToBottom();
+
+.message {
+    text-align: left;
+}

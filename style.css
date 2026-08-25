@@ -1,0 +1,149 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    background: #f5f7fb;
+}
+
+
+/* =========================
+   CHAT CONTAINER
+========================= */
+
+#n8n-chat {
+    width: 100%;
+    height: 100vh;
+}
+
+
+/* =========================
+   N8N CHAT VARIABLES
+========================= */
+
+:root {
+
+    /* Main colors */
+
+    --chat--color-primary: #4f46e5;
+    --chat--color-primary-shade-50: #4338ca;
+    --chat--color-primary-shade-100: #3730a3;
+
+    --chat--color-secondary: #4f46e5;
+    --chat--color-secondary-shade-50: #4338ca;
+
+    --chat--color-white: #ffffff;
+
+    --chat--color-light: #f5f7fb;
+    --chat--color-light-shade-50: #eef1f7;
+    --chat--color-light-shade-100: #e2e6ef;
+
+    --chat--color-medium: #9ca3af;
+
+    --chat--color-dark: #111827;
+
+    --chat--color-disabled: #9ca3af;
+
+    --chat--color-typing: #6b7280;
+
+
+    /* Spacing */
+
+    --chat--spacing: 1rem;
+
+    --chat--border-radius: 12px;
+
+    --chat--transition-duration: 0.2s;
+
+
+    /* Window */
+
+    --chat--window--width: 100vw;
+    --chat--window--height: 100vh;
+
+
+    /* Header */
+
+    --chat--header-height: auto;
+
+    --chat--header--padding: 1.5rem;
+
+    --chat--header--background: #111827;
+
+    --chat--header--color: #ffffff;
+
+    --chat--header--border-top: none;
+
+    --chat--header--border-bottom: none;
+
+
+    /* Heading */
+
+    --chat--heading--font-size: 1.5rem;
+
+
+    /* Messages */
+
+    --chat--message--font-size: 0.95rem;
+
+    --chat--message--padding: 0.85rem 1rem;
+
+    --chat--message--border-radius: 12px;
+
+    --chat--message-line-height: 1.5;
+
+
+    /* Bot message */
+
+    --chat--message--bot--background: #ffffff;
+
+    --chat--message--bot--color: #111827;
+
+    --chat--message--bot--border: 1px solid #e5e7eb;
+
+
+    /* User message */
+
+    --chat--message--user--background: #4f46e5;
+
+    --chat--message--user--color: #ffffff;
+
+    --chat--message--user--border: none;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    --chat--spacing: 0.75rem;
+
+    #n8n-chat {
+        height: 100dvh;
+    }
+
+}
